@@ -4,6 +4,7 @@ class Graphe:
     L = []
     P = []
     nombre_sommets = None
+    a_cycle_absorbant = False
 
     def __init__(self, path):
         lines = []
@@ -99,10 +100,18 @@ class Graphe:
                         self.L[i][j] = self.L[i][k] + self.L[k][j]
                         self.P[i][j] = self.P[k][j]
 
+                    if i == j and self.L[i][j] < 0:
+                        self.a_cycle_absorbant = True  # Le seul moyen d'améliorer le trajet d'un sommet vers lui-même est via un cycle absorbant
+                        return
+
+
 
 
 graphe = Graphe("test.txt")
 graphe.floydWarshall()
-print("\n\nRésultats finaux :\n")
-graphe.afficher_adja()
-graphe.afficher_pred()
+if graphe.a_cycle_absorbant:
+    print("\n\nImpossible de mener à bien l'algorithme car le graphe contient des cycles absorbants.")
+else:
+    print("\n\nRésultats finaux :\n")
+    graphe.afficher_adja()
+    graphe.afficher_pred()
