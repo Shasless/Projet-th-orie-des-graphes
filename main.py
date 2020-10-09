@@ -5,6 +5,7 @@ class Graphe:
     P = []
     nombre_sommets = None
     a_cycle_absorbant = False
+    floyd_done = False
 
     def __init__(self, path):
         lines = []
@@ -15,12 +16,14 @@ class Graphe:
         self.nombre_sommets = int(lines.pop(0))
         for i in range(0, self.nombre_sommets):  # On crée la matrice vide que l'on viendra remplir plus tard
             self.L.append([])
-            self.P.append([i for n in range(0, self.nombre_sommets)])  # On crée la matrice des prédécesseurs
+            self.P.append([])
             for n in range(0, self.nombre_sommets):
                 if n == i:
                     self.L[-1].append(0)
+                    self.P[-1].append(i)
                 else:
                     self.L[-1].append(None)
+                    self.P[-1].append(None)
 
         lines.pop(0)  # On se débarasse de la ligne contenant le nombre d'arcs car elle ne nous importe pas
 
@@ -29,6 +32,7 @@ class Graphe:
                 line = line.split(" ")
                 line = list(map(int, line))
                 self.L[line[0]][line[1]] = line[2]  # On entre dans la matrice d'adjacence chaque arête du fichier
+                self.P[line[0]][line[1]] = line[0]  # On entre aussi la matrice des prédécesseurs
         except IndexError:
             print("Le nombre de sommets et les bornes d'une des arêtes ne correspondent pas.")
         except TypeError:
@@ -79,16 +83,17 @@ class Graphe:
         table[1] = table[1][:long_max[0]+1] + "╬" + table[1][long_max[0]+2:]  # On termine la construction des barres
         print('\n'.join(table))  # On affiche les lignes
 
-    def floydWarshall(self):
+    def floydWarshall(self, display=True):
         """
         Éxécute l'algorithme de Floyd-Warshall sur le graphe
         :return:
         """
 
         for k in range(0, self.nombre_sommets):
-            print("\nK =", k)
-            self.afficher_adja()
-            self.afficher_pred()
+            if display:
+                print("\nK =", k)
+                self.afficher_adja()
+                self.afficher_pred()
             for i in range(0, self.nombre_sommets):
                 for j in range(0, self.nombre_sommets):
                     if self.L[i][k] is None or self.L[k][j] is None:  # Si l'un des chemins par lesquels on veut passer n'existe pas, on passe
@@ -103,7 +108,25 @@ class Graphe:
                     if i == j and self.L[i][j] < 0:
                         self.a_cycle_absorbant = True  # Le seul moyen d'améliorer le trajet d'un sommet vers lui-même est via un cycle absorbant
                         return
+        self.floyd_done = True
 
+    def plusCourtChemin(self, src, dest):
+        """
+        Renvoie la liste des sommets du plus court chemin de src à dest.
+        :return:
+        """
+
+        if not self.floyd_done:
+            self.floydWarshall(False)
+
+        if self.P[src][dest] is None or self.a_cycle_absorbant:
+            return []  # Si on a pas de point de départ au chemin de src vers dest alors on peut renvoyer directement un ensemble vide. Idem s'il y a des cycles absorbants
+        else:
+            chemin = [dest]
+            while src != dest:
+                dest = self.P[src][dest]  # On remonte les prédécesseurs jusqu'à retomber sur le sommet initial
+                chemin.insert(0, dest)
+            return chemin
 
 
 
@@ -115,3 +138,9 @@ else:
     print("\n\nRésultats finaux :\n")
     graphe.afficher_adja()
     graphe.afficher_pred()
+    src = 0
+    dest = 3
+    print(f"\nPlus court chemin de {src} à {dest}:\n")
+    print(graphe.plusCourtChemin(src, dest))
+
+
