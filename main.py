@@ -38,6 +38,7 @@ class Graphe:
         Affiche la table L à l'aide de self.afficher
         :return:
         """
+        print("Matrice d'adjascence")
         self.afficher(self.L)
 
     def afficher_pred(self):
@@ -45,6 +46,7 @@ class Graphe:
         Affiche la table P à l'aide de self.afficher
         :return:
         """
+        print("Matrice des prédécésseurs")
         self.afficher(self.P)
 
     def afficher(self, table):
@@ -84,7 +86,8 @@ class Graphe:
 
         for k in range(0, self.nombre_sommets):
             print("\nK =", k)
-            graphe.afficher_adja()
+            self.afficher_adja()
+            self.afficher_pred()
             for i in range(0, self.nombre_sommets):
                 for j in range(0, self.nombre_sommets):
                     if self.L[i][k] is None or self.L[k][j] is None:  # Si l'un des chemins par lesquels on veut passer n'existe pas, on passe
@@ -100,7 +103,6 @@ class Graphe:
 
 graphe = Graphe("test.txt")
 graphe.floydWarshall()
-print("\n\nMatrice d'adjascence\n")
+print("\n\nRésultats finaux :\n")
 graphe.afficher_adja()
-print("\nMatrice des prédécesseurs")
 graphe.afficher_pred()
