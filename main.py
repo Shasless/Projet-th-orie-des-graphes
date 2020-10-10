@@ -130,17 +130,36 @@ class Graphe:
 
 
 
-graphe = Graphe("test.txt")
-graphe.floydWarshall()
-if graphe.a_cycle_absorbant:
-    print("\n\nImpossible de mener à bien l'algorithme car le graphe contient des cycles absorbants.")
-else:
-    print("\n\nRésultats finaux :\n")
-    graphe.afficher_adja()
-    graphe.afficher_pred()
-    src = 0
-    dest = 3
-    print(f"\nPlus court chemin de {src} à {dest}:\n")
-    print(graphe.plusCourtChemin(src, dest))
 
+
+
+
+print("Bienvenue dans le projet de Théorie des Graphes de Filangi, Girard et Boyaram")
+
+
+while(1):
+    while (1):
+        nbrgraphes = input("Entrez le numéro du graphe voulue: \n")
+        try: #on verifie que l'utilisateur a bien rentrez un numero existant
+            graphe = Graphe("graphes/test-"+ nbrgraphes +".txt")
+            break
+        except:
+           print("hum vous avez causer une erreur d'atribution de fichier, retentez votre chance")
+
+    graphe.floydWarshall()
+    if graphe.a_cycle_absorbant:
+        print("\n\nImpossible de mener à bien l'algorithme car le graphe contient des cycles absorbants.")
+    else:
+        print("\n\nRésultats finaux :\n")
+        graphe.afficher_adja()
+        graphe.afficher_pred()
+        src = 0
+        dest = 3
+        print(f"\nPlus court chemin de {src} à {dest}:\n")
+        print(graphe.plusCourtChemin(src, dest))
+
+    if (input("Voulez vous continuez ? (oui pour continuer)") == "oui"):
+        nbrgraphes = input("Entrez le numéro du graphe voulue: \n")
+    else:
+        break
 
