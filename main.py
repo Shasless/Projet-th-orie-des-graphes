@@ -158,8 +158,6 @@ while(1):
         print(f"\nPlus court chemin de {src} à {dest}:\n")
         print(graphe.plusCourtChemin(src, dest))
 
-    if (input("Voulez vous continuez ? (oui pour continuer)") == "oui"):
-        nbrgraphes = input("Entrez le numéro du graphe voulue: \n")
-    else:
+    if (input("Voulez vous continuez ? (oui pour continuer)") != "oui"):
         break
 
