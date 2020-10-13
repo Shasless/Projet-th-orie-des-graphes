@@ -132,20 +132,21 @@ class Graphe:
 
 
 
-
-
-print("Bienvenue dans le projet de Théorie des Graphes de Filangi, Girard et Boyaram")
-
-
-while(1):
-    while (1):
-        nbrgraphes = input("Entrez le numéro du graphe voulue: \n")
-        try: #on verifie que l'utilisateur a bien rentrez un numero existant
-            graphe = Graphe("graphes/test-"+ nbrgraphes +".txt")
+# Interface CLI
+print("Bienvenue dans le projet de Théorie des Graphes d'Enzo Filangi, Adrien Girard et Josian Boyaram")
+while True:
+    while True:
+        nbr_graphe = input("Entrez le numéro du graphe voulu: \n")
+        try:  # on verifie que l'utilisateur a bien rentré un numero existant
+            graphe = Graphe("graphes/test-" + nbr_graphe + ".txt")
             break
         except:
-           print("hum vous avez causer une erreur d'atribution de fichier, retentez votre chance")
+            print("Ce graphe n'existe pas, veuillez entrer un autre numéro.")
 
+    print(f"\n\n### Le graphe {nbr_graphe} a bien été chargé ###\n")
+    graphe.afficher_adja()
+    graphe.afficher_pred()
+    print("\n\n### Algorithme de Floyd-Warshall ###\n")
     graphe.floydWarshall()
     if graphe.a_cycle_absorbant:
         print("\n\nImpossible de mener à bien l'algorithme car le graphe contient des cycles absorbants.")
@@ -158,6 +159,8 @@ while(1):
         print(f"\nPlus court chemin de {src} à {dest}:\n")
         print(graphe.plusCourtChemin(src, dest))
 
-    if (input("Voulez vous continuez ? (oui pour continuer)") != "oui"):
+    if input("Voulez vous continuer ? (o/n)\n").lower() not in ["o", "oui"]:
         break
+    else:
+        print("\n\n#################################\n\n")
 
