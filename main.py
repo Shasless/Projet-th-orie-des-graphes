@@ -20,7 +20,7 @@ class Graphe:
             for n in range(0, self.nombre_sommets):
                 if n == i:
                     self.L[-1].append(0)
-                    self.P[-1].append(i)
+                    self.P[-1].append(i+1)
                 else:
                     self.L[-1].append(None)
                     self.P[-1].append(None)
@@ -31,8 +31,8 @@ class Graphe:
             for line in lines:
                 line = line.split(" ")
                 line = list(map(int, line))
-                self.L[line[0]][line[1]] = line[2]  # On entre dans la matrice d'adjacence chaque arête du fichier
-                self.P[line[0]][line[1]] = line[0]  # On entre aussi la matrice des prédécesseurs
+                self.L[line[0]-1][line[1]-1] = line[2]  # On entre dans la matrice d'adjacence chaque arête du fichier
+                self.P[line[0]-1][line[1]-1] = line[0]  # On entre aussi la matrice des prédécesseurs
         except IndexError:
             print("Le nombre de sommets et les bornes d'une des arêtes ne correspondent pas.")
         except TypeError:
@@ -69,10 +69,10 @@ class Graphe:
             for index, cell in enumerate(line):  # On en profite pour remplacer les "None" par un symbole infini
                 if cell is None:
                     properly_formated_array[i][index] = "∞"
-            line.insert(0, i)
+            line.insert(0, i+1)
             i += 1
         # Puis on crée une ligne tout en haut pour les numéros de colonnes
-        properly_formated_array.insert(0, [i-1 for i in range(0, self.nombre_sommets+1)])
+        properly_formated_array.insert(0, [i for i in range(0, self.nombre_sommets+1)])
         properly_formated_array[0][0] = ""  # On supprime le premier élément de cette ligne car c'est la case inutile de la légende
 
         stringed_values = [[str(e) for e in row] for row in properly_formated_array]  # On converti chaque ligne en string pour pouvoir récupérer la longueur des nombres plus tard
@@ -116,16 +116,18 @@ class Graphe:
         :return:
         """
 
-        if not self.floyd_done:
+        if not self.floyd_done:  # Si on a pas encore fait l'algorithme, on le fait sans afficher ses étapes
             self.floydWarshall(False)
 
-        if self.P[src][dest] is None or self.a_cycle_absorbant:
+        if self.P[src-1][dest-1] is None or self.a_cycle_absorbant:
             return []  # Si on a pas de point de départ au chemin de src vers dest alors on peut renvoyer directement un ensemble vide. Idem s'il y a des cycles absorbants
         else:
             chemin = [dest]
             while src != dest:
-                dest = self.P[src][dest]  # On remonte les prédécesseurs jusqu'à retomber sur le sommet initial
-                chemin.insert(0, dest)
+                # On n'oublie pas de convertir src et dest qui sont dans [1,n] pour les humains vers [0,n-1] pour l'ordinateur lors de la lecture
+                dest = self.P[src-1][dest-1]  # On remonte les prédécesseurs jusqu'à retomber sur le sommet initial
+                chemin.append(dest)  # On devrait ajouter le prédécesseur au début puisqu'on part de la fin, cependant on inversera juste la liste à la fin de la boucle
+            chemin.reverse()  # Plus efficace que d'ajouter au début de la liste à chaque tour de boucle
             return chemin
 
 
@@ -154,8 +156,8 @@ while True:
         print("\n\nRésultats finaux :\n")
         graphe.afficher_adja()
         graphe.afficher_pred()
-        src = 0
-        dest = 3
+        src = 3
+        dest = 2
         print(f"\nPlus court chemin de {src} à {dest}:\n")
         print(graphe.plusCourtChemin(src, dest))
 
