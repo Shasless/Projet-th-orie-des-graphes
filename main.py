@@ -156,12 +156,26 @@ while True:
         print("\n\nRésultats finaux :\n")
         graphe.afficher_adja()
         graphe.afficher_pred()
-        src = 3
-        dest = 2
-        print(f"\nPlus court chemin de {src} à {dest}:\n")
-        print(graphe.plusCourtChemin(src, dest))
+        print("\n\nChemin le plus court :\n")
+        while True:
+            while True:  # Validation des entrées utilisateur
+                try:
+                    src = int(input("Sommet source :\n"))
+                    dest = int(input("Somme destination : \n"))
+                    assert 0 < src <= graphe.nombre_sommets and 0 < dest <= graphe.nombre_sommets
+                    break
+                except ValueError:
+                    print("Veuillez entrer des nombres entiers.")
+                except AssertionError:
+                    print("Veuillez sélectionner des sommets existants.")
+            print(f"\nPlus court chemin de {src} à {dest}:\n")
+            print(graphe.plusCourtChemin(src, dest))
+            if input("Voulez vous consulter un chemin différent ? (o/n)\n").lower() not in ["o", "oui"]:
+                break
+            else:
+                print("\n### Autre chemin ###\n")
 
-    if input("Voulez vous continuer ? (o/n)\n").lower() not in ["o", "oui"]:
+    if input("Voulez vous traiter un autre graphe ? (o/n)\n").lower() not in ["o", "oui"]:
         break
     else:
         print("\n\n#################################\n\n")
