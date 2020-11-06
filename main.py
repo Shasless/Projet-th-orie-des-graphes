@@ -1,4 +1,5 @@
 import copy
+import os
 
 class Graphe:
     L = []
@@ -136,10 +137,14 @@ class Graphe:
 # Interface CLI
 print("Bienvenue dans le projet de Théorie des Graphes d'Enzo Filangi, Adrien Girard et Josian Boyaram")
 while True:
+    print('Liste des fichiers :')
+    files = sorted(os.listdir("graphes/"), key=lambda x: int(x[7:].split(".")[0]))
+    for index, value in enumerate(files):
+        print(f"{index+1}. {value}")
     while True:
         nbr_graphe = input("Entrez le numéro du graphe voulu: \n")
         try:  # on verifie que l'utilisateur a bien rentré un numero existant
-            graphe = Graphe("graphes/test-" + nbr_graphe + ".txt")
+            graphe = Graphe("graphes/graphe-" + nbr_graphe + ".txt")
             break
         except:
             print("Ce graphe n'existe pas, veuillez entrer un autre numéro.")
