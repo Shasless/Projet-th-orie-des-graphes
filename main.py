@@ -20,19 +20,19 @@ class Graphe:
             for n in range(0, self.nombre_sommets):
                 if n == i:
                     self.L[-1].append(0)
-                    self.P[-1].append(i+1)
+                    self.P[-1].append(i)
                 else:
                     self.L[-1].append(None)
                     self.P[-1].append(None)
 
-        lines.pop(0)  # On se débarasse de la ligne contenant le nombre d'arcs car elle ne nous importe pas
+        lines.pop(0)
 
         try:
             for line in lines:
                 line = line.split(" ")
                 line = list(map(int, line))
-                self.L[line[0]-1][line[1]-1] = line[2]  # On entre dans la matrice d'adjacence chaque arête du fichier
-                self.P[line[0]-1][line[1]-1] = line[0]  # On entre aussi la matrice des prédécesseurs
+                self.L[line[0]][line[1]] = line[2]  # On entre dans la matrice d'adjacence chaque arête du fichier
+                self.P[line[0]][line[1]] = line[0]  # On entre aussi la matrice des prédécesseurs
         except IndexError:
             print("Le nombre de sommets et les bornes d'une des arêtes ne correspondent pas.")
         except TypeError:
@@ -69,7 +69,7 @@ class Graphe:
             for index, cell in enumerate(line):  # On en profite pour remplacer les "None" par un symbole infini
                 if cell is None:
                     properly_formated_array[i][index] = "∞"
-            line.insert(0, i+1)
+            line.insert(0, i)
             i += 1
         # Puis on crée une ligne tout en haut pour les numéros de colonnes
         properly_formated_array.insert(0, [i for i in range(0, self.nombre_sommets+1)])
@@ -119,13 +119,12 @@ class Graphe:
         if not self.floyd_done:  # Si on a pas encore fait l'algorithme, on le fait sans afficher ses étapes
             self.floydWarshall(False)
 
-        if self.P[src-1][dest-1] is None or self.a_cycle_absorbant:
+        if self.P[src][dest] is None or self.a_cycle_absorbant:
             return []  # Si on a pas de point de départ au chemin de src vers dest alors on peut renvoyer directement un ensemble vide. Idem s'il y a des cycles absorbants
         else:
             chemin = [dest]
             while src != dest:
-                # On n'oublie pas de convertir src et dest qui sont dans [1,n] pour les humains vers [0,n-1] pour l'ordinateur lors de la lecture
-                dest = self.P[src-1][dest-1]  # On remonte les prédécesseurs jusqu'à retomber sur le sommet initial
+                dest = self.P[src][dest]  # On remonte les prédécesseurs jusqu'à retomber sur le sommet initial
                 chemin.append(dest)  # On devrait ajouter le prédécesseur au début puisqu'on part de la fin, cependant on inversera juste la liste à la fin de la boucle
             chemin.reverse()  # Plus efficace que d'ajouter au début de la liste à chaque tour de boucle
             return chemin
@@ -162,7 +161,7 @@ while True:
                 try:
                     src = int(input("Sommet source :\n"))
                     dest = int(input("Somme destination : \n"))
-                    assert 0 < src <= graphe.nombre_sommets and 0 < dest <= graphe.nombre_sommets
+                    assert 0 <= src <= graphe.nombre_sommets-1
                     break
                 except ValueError:
                     print("Veuillez entrer des nombres entiers.")
