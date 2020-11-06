@@ -72,7 +72,7 @@ class Graphe:
             line.insert(0, i)
             i += 1
         # Puis on crée une ligne tout en haut pour les numéros de colonnes
-        properly_formated_array.insert(0, [i for i in range(0, self.nombre_sommets+1)])
+        properly_formated_array.insert(0, [i for i in range(-1, self.nombre_sommets)])
         properly_formated_array[0][0] = ""  # On supprime le premier élément de cette ligne car c'est la case inutile de la légende
 
         stringed_values = [[str(e) for e in row] for row in properly_formated_array]  # On converti chaque ligne en string pour pouvoir récupérer la longueur des nombres plus tard
