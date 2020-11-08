@@ -1,5 +1,18 @@
 import copy
 import os
+import sys
+
+
+class Tee(object):
+    def __init__(self, *files):
+        self.files = files
+    def write(self, obj):
+        for f in self.files:
+            f.write(obj)
+            f.flush() 
+    def flush(self) :
+        for f in self.files:
+            f.flush()
 
 class Graphe:
     L = []
@@ -136,14 +149,26 @@ class Graphe:
 
 # Interface CLI
 print("Bienvenue dans le projet de Théorie des Graphes d'Enzo Filangi, Adrien Girard et Josian Boyaram")
+original_stdout = sys.stdout
 while True:
+    sys.stdout = original_stdout
     print('Liste des fichiers :')
     files = sorted(os.listdir("graphes/"), key=lambda x: int(x[7:].split(".")[0]))
     for index, value in enumerate(files):
         print(f"{index+1}. {value}")
     while True:
-        nbr_graphe = input("Entrez le numéro du graphe voulu: \n")
+        nbr_graphe = input("Entrez le numéro du graphe voulu (précédé le nombre de trace pour en générer la trace): \n")
+        
         try:  # on verifie que l'utilisateur a bien rentré un numero existant
+            if("trace" in nbr_graphe):
+                nbr_graphe=nbr_graphe[5:]
+                print(nbr_graphe)
+                print(nbr_graphe)
+                f = open("traces/trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
+                sys.stdout = Tee(sys.stdout, f)
+                
+            else:
+                sys.stdout = original_stdout
             graphe = Graphe("graphes/graphe-" + nbr_graphe + ".txt")
             break
         except:
@@ -178,7 +203,8 @@ while True:
                 break
             else:
                 print("\n### Autre chemin ###\n")
-
+    
+    sys.stdout = original_stdout
     if input("Voulez vous traiter un autre graphe ? (o/n)\n").lower() not in ["o", "oui"]:
         break
     else:
