@@ -1,2 +1,3 @@
 venv/
-traces/
+traces/*
+!traces/.gitkeep
