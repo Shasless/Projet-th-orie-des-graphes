@@ -22,6 +22,12 @@ class Graphe:
     floyd_done = False
 
     def __init__(self, path):
+        self.L = []
+        self.self.P = []
+        self.nombre_sommets = None
+        self.a_cycle_absorbant = False
+        self.floyd_done = False
+
         lines = []
         with open(path, "r") as file:  # On récupère les lignes du fichier pour pouvoir créer le graphe
             for line in file.readlines():
@@ -163,13 +169,12 @@ while True:
             if("trace" in nbr_graphe):
                 nbr_graphe=nbr_graphe[5:]
                 print(nbr_graphe)
-                print(nbr_graphe)
                 f = open("traces/trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
                 sys.stdout = Tee(sys.stdout, f)
-                
             else:
                 sys.stdout = original_stdout
-            graphe = Graphe("graphes/graphe-" + nbr_graphe + ".txt")
+
+            graphe = Graphe("graphes/A7-graphe-" + nbr_graphe + ".txt")
             break
         except:
             print("Ce graphe n'existe pas, veuillez entrer un autre numéro.")
