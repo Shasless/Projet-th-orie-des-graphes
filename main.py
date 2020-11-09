@@ -15,13 +15,13 @@ class MultiPrint(object):#classe permettant l'affichage dans un fichier en meme 
             fichier.flush()
 
 class Graphe:
-    L = []
-    P = []
-    nombre_sommets = None
-    a_cycle_absorbant = False
-    floyd_done = False
-
     def __init__(self, path):
+        self.L = []
+        self.P = []
+        self.nombre_sommets = None
+        self.a_cycle_absorbant = False
+        self.floyd_done = False
+
         lines = []
         with open(path, "r") as file:  # On récupère les lignes du fichier pour pouvoir créer le graphe
             for line in file.readlines():
@@ -49,8 +49,10 @@ class Graphe:
                 self.P[line[0]][line[1]] = line[0]  # On entre aussi la matrice des prédécesseurs
         except IndexError:
             print("Le nombre de sommets et les bornes d'une des arêtes ne correspondent pas.")
+            raise IndexError
         except TypeError:
             print("Le fichier source est mal formatté (les noms des sommets doivent être des nombres).")
+            raise TypeError
 
     def afficher_adja(self):
         """
@@ -153,20 +155,21 @@ original_stdout = sys.stdout
 while True:
     sys.stdout = original_stdout
     print('Liste des fichiers :')
-    files = sorted(os.listdir("graphes/"), key=lambda x: int(x[7:].split(".")[0]))
+    files = sorted(os.listdir("graphes/"), key=lambda x: int(x[10:].split(".")[0]))
     for index, value in enumerate(files):
         print(f"{index+1}. {value}")
     while True:
-        nbr_graphe = input("Entrez le numéro du graphe voulu (précédé le nombre de 'trace' pour en générer la trace): \n")
+        nbr_graphe = input("Entrez le numéro du graphe voulu (précédez le nombre du mot clé 'trace' pour en générer la trace): \n")
         
         try:  # on verifie que l'utilisateur a bien rentré un numero existant
             if("trace" in nbr_graphe):
                 nbr_graphe=nbr_graphe[5:]
-                f = open("traces/trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
+                f = open("traces/A7-trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
                 sys.stdout = MultiPrint(sys.stdout, f)
             else:
                 sys.stdout = original_stdout
-            graphe = Graphe("graphes/graphe-" + nbr_graphe + ".txt")
+
+            graphe = Graphe("graphes/A7-graphe-" + nbr_graphe + ".txt")
             break
         except:
             print("Ce graphe n'existe pas, veuillez entrer un autre numéro.")
