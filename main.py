@@ -162,7 +162,7 @@ while True:
         nbr_graphe = input("Entrez le numéro du graphe voulu (précédez le nombre du mot clé 'trace' pour en générer la trace): \n")
         
         try:  # on verifie que l'utilisateur a bien rentré un numero existant
-            if("trace" in nbr_graphe):
+            if "trace" in nbr_graphe:
                 nbr_graphe=nbr_graphe[5:]
                 f = open("traces/A7-trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
                 sys.stdout = MultiPrint(sys.stdout, f)
