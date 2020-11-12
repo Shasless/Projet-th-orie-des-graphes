@@ -86,7 +86,7 @@ Matrice des prédécésseurs
 3 ║ ∞ | ∞ | ∞ | 3
 
 
-Résultats finaux :
+### Résultats finaux ###
 
 Matrice d'adjascence
   ║ 0 | 1  | 2  | 3 
@@ -102,3 +102,31 @@ Matrice des prédécésseurs
 1 ║ ∞ | 1 | 1 | 2
 2 ║ ∞ | 2 | 2 | 2
 3 ║ ∞ | ∞ | ∞ | 3
+
+
+### Chemin le plus court ###
+
+Plus court chemin entre 0 et 0 : [0]
+Plus court chemin entre 0 et 1 : [0, 2, 1]
+Plus court chemin entre 0 et 2 : [0, 2]
+Plus court chemin entre 0 et 3 : [0, 2, 3]
+
+
+Plus court chemin entre 1 et 0 : Pas de chemin
+Plus court chemin entre 1 et 1 : [1]
+Plus court chemin entre 1 et 2 : [1, 2]
+Plus court chemin entre 1 et 3 : [1, 2, 3]
+
+
+Plus court chemin entre 2 et 0 : Pas de chemin
+Plus court chemin entre 2 et 1 : [2, 1]
+Plus court chemin entre 2 et 2 : [2]
+Plus court chemin entre 2 et 3 : [2, 3]
+
+
+Plus court chemin entre 3 et 0 : Pas de chemin
+Plus court chemin entre 3 et 1 : Pas de chemin
+Plus court chemin entre 3 et 2 : Pas de chemin
+Plus court chemin entre 3 et 3 : [3]
+
+

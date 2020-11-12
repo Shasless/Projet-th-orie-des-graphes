@@ -136,7 +136,7 @@ class Graphe:
             self.floydWarshall(False)
 
         if self.P[src][dest] is None or self.a_cycle_absorbant:
-            return []  # Si on a pas de point de départ au chemin de src vers dest alors on peut renvoyer directement un ensemble vide. Idem s'il y a des cycles absorbants
+            return "Pas de chemin"  # Si on a pas de point de départ au chemin de src vers dest alors on peut renvoyer directement un ensemble vide. Idem s'il y a des cycles absorbants
         else:
             chemin = [dest]
             while src != dest:
@@ -182,11 +182,15 @@ while True:
     if graphe.a_cycle_absorbant:
         print("\n\nImpossible de mener à bien l'algorithme car le graphe contient des cycles absorbants.")
     else:
-        print("\n\nRésultats finaux :\n")
+        print("\n\n### Résultats finaux ###\n")
         graphe.afficher_adja()
         graphe.afficher_pred()
-        print("\n\nChemin le plus court :\n")
-        while True:
+        print("\n\n### Chemin le plus court ###\n")
+        for i in range(0, graphe.nombre_sommets):
+            for n in range(0, graphe.nombre_sommets):
+                print(f"Plus court chemin entre {i} et {n} : {graphe.plusCourtChemin(i, n)}")
+            print("\n")
+        while False:
             while True:  # Validation des entrées utilisateur
                 try:
                     src = int(input("Sommet source :\n"))

@@ -94,3 +94,6 @@ Matrice des prédécésseurs
 2 ║ ∞ | ∞ | 2 | 2 | ∞
 3 ║ ∞ | ∞ | ∞ | 3 | 3
 4 ║ ∞ | 4 | 4 | 2 | 4
+
+
+Impossible de mener à bien l'algorithme car le graphe contient des cycles absorbants.
