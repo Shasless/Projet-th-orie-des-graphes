@@ -164,12 +164,12 @@ while True:
         try:  # on verifie que l'utilisateur a bien rentré un numero existant
             if "trace" in nbr_graphe:
                 nbr_graphe=nbr_graphe[5:]
-                f = open("traces/A7-trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
+                f = open("traces/L3-A7-trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
                 sys.stdout = MultiPrint(sys.stdout, f)
             else:
                 sys.stdout = original_stdout
 
-            graphe = Graphe("graphes/A7-graphe-" + nbr_graphe + ".txt")
+            graphe = Graphe("graphes/L3-A7-graphe-" + nbr_graphe + ".txt")
             break
         except:
             print("Ce graphe n'existe pas, veuillez entrer un autre numéro.")
