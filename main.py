@@ -152,6 +152,7 @@ class Graphe:
 # Interface CLI
 print("Bienvenue dans le projet de Théorie des Graphes d'Enzo Filangi, Adrien Girard et Josian Boyaram")
 original_stdout = sys.stdout
+trace_mode = False
 while True:
     sys.stdout = original_stdout
     print('Liste des fichiers :')
@@ -163,6 +164,7 @@ while True:
         
         try:  # on verifie que l'utilisateur a bien rentré un numero existant
             if "trace" in nbr_graphe:
+                trace_mode = True
                 nbr_graphe=nbr_graphe[5:]
                 f = open("L3-A7-trace-" + nbr_graphe + ".txt", "w", encoding="utf-8")
                 sys.stdout = MultiPrint(sys.stdout, f)
@@ -186,33 +188,36 @@ while True:
         graphe.afficher_adja()
         graphe.afficher_pred()
         print("\n\n### Chemin le plus court ###\n")
-        for i in range(0, graphe.nombre_sommets):
-            for n in range(0, graphe.nombre_sommets):
-                print(f"Plus court chemin entre {i} et {n} : {graphe.plusCourtChemin(i, n)}")
-            print("\n")
-        while False:
-            while True:  # Validation des entrées utilisateur
-                try:
-                    src = int(input("Sommet source :\n"))
-                    dest = int(input("Somme destination : \n"))
-                    assert 0 <= src <= graphe.nombre_sommets-1
+        if trace_mode:
+            for i in range(0, graphe.nombre_sommets):
+                for n in range(0, graphe.nombre_sommets):
+                    print(f"Plus court chemin entre {i} et {n} : {graphe.plusCourtChemin(i, n)}")
+                print("\n")
+        else:
+            while True:
+                while True:  # Validation des entrées utilisateur
+                    try:
+                        src = int(input("Sommet source :\n"))
+                        dest = int(input("Somme destination : \n"))
+                        assert 0 <= src <= graphe.nombre_sommets-1
+                        break
+                    except ValueError:
+                        print("Veuillez entrer des nombres entiers.")
+                    except AssertionError:
+                        print("Veuillez sélectionner des sommets existants.")
+                print(f"\nPlus court chemin de {src} à {dest}:\n")
+                print(graphe.plusCourtChemin(src, dest))
+                if input("Voulez vous consulter un chemin différent ? (o/n)\n").lower() not in ["o", "oui"]:
                     break
-                except ValueError:
-                    print("Veuillez entrer des nombres entiers.")
-                except AssertionError:
-                    print("Veuillez sélectionner des sommets existants.")
-            print(f"\nPlus court chemin de {src} à {dest}:\n")
-            print(graphe.plusCourtChemin(src, dest))
-            if input("Voulez vous consulter un chemin différent ? (o/n)\n").lower() not in ["o", "oui"]:
-                break
-            else:
-                print("\n### Autre chemin ###\n")
+                else:
+                    print("\n### Autre chemin ###\n")
     
     sys.stdout = original_stdout
-    try:
-        f.close()
-    except:
-        pass
+    if trace_mode:
+        try:
+            f.close()
+        except:
+            pass
     if input("Voulez vous traiter un autre graphe ? (o/n)\n").lower() not in ["o", "oui"]:
         break
     else:
